@@ -2,7 +2,7 @@
 
 ## Introduce
 
-Black butler is launcher for Android that simply works, It's much as `macOS-Alfred` and `Window-WoX`.
+Black butler is launcher for Android that simply works, It's much as `macOS-Alfred` and `Windows-WoX`.
 
 
 ## Features
