@@ -11,7 +11,7 @@ import io.reactivex.subjects.Subject
  * Description:
  */
 
-object SubjectDatabinding {
+object SubjectDataBinding {
 
     @JvmStatic
     @BindingConversion
