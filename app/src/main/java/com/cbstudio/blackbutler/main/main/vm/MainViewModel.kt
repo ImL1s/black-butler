@@ -15,7 +15,8 @@ import io.reactivex.subjects.Subject
 class MainViewModel : BaseViewModel() {
 
     val textLiveData: MutableLiveData<String> = MutableLiveData()
-    val clickSubject: Subject<Unit> = BehaviorSubject.create()
+    val startClickSubject: Subject<Unit> = BehaviorSubject.create()
+    val stopClickSubject: Subject<Unit> = BehaviorSubject.create()
 
     init {
         textLiveData.value = "CLICK"

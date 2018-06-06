@@ -15,10 +15,16 @@
         tools:context=".main.main.activity.MainActivity">
 
         <Button
-            android:onClick="@{vm.clickSubject}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{vm.textLiveData}" />
+            android:onClick="@{vm.startClickSubject}"
+            android:text="@string/start" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{vm.stopClickSubject}"
+            android:text="@string/stop" />
 
 
     </LinearLayout>
