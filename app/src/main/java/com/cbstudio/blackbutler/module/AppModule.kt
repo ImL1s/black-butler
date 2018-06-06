@@ -1,7 +1,7 @@
 package com.cbstudio.blackbutler.module
 
 import android.content.Context
-import com.cbstudio.BlackButlerApplication
+import com.cbstudio.blackbutler.BlackButlerApplication
 import dagger.Module
 import dagger.Provides
 import javax.inject.Inject

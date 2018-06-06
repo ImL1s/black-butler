@@ -1,6 +1,6 @@
 package com.cbstudio.blackbutler.module
 
-import com.cbstudio.BlackButlerApplication
+import com.cbstudio.blackbutler.BlackButlerApplication
 import dagger.BindsInstance
 import dagger.Component
 
