@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
-import android.widget.TextView
 import com.cbstudio.blackbutler.R
 import com.cbstudio.blackbutler.databinding.ActivityMainBinding
 import com.cbstudio.blackbutler.extensions.startService
@@ -14,12 +13,6 @@ import com.cbstudio.blackbutler.services.FloatViewService
 
 class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>
 (MainViewModel::class, R.layout.activity_main) {
-
-    private lateinit var floatView: TextView
-
-    private val layoutParams: WindowManager.LayoutParams by lazy {
-        WindowManager.LayoutParams()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
