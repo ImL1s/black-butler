@@ -5,10 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.IBinder
+import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.view.WindowManager
-import android.widget.TextView
 import com.cbstudio.blackbutler.R
+import com.cbstudio.blackbutler.view.CounterView
 
 
 /**
@@ -17,7 +18,7 @@ import com.cbstudio.blackbutler.R
  */
 class FloatViewService : Service() {
 
-    private lateinit var floatView: TextView
+    private lateinit var floatView: CounterView
 
     private val layoutParams: WindowManager.LayoutParams by lazy {
         WindowManager.LayoutParams()
@@ -42,9 +43,9 @@ class FloatViewService : Service() {
         layoutParams.y = 0
         layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT
         layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT
-        floatView = TextView(this)
-        floatView.text = "HELLO WORLD"
-        floatView.setTextColor(resources.getColor(R.color.colorWhite))
+        floatView = CounterView(this)
+//        floatView.text = "HELLO WORLD"
+//        floatView.setTextColor(ContextCompat.getColor(this, R.color.colorWhite))
         windowManager.addView(floatView, layoutParams)
     }
 
