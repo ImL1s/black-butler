@@ -41,14 +41,17 @@ class CounterView(context: Context) : View(context), View.OnClickListener {
 
         Log.e("onMeasure", "onMeasure: x-$widthMode/$widthSize")
         Log.e("onMeasure", "onMeasure: y-$heightMode/$heightSize")
+//        x = 300F
+//        y = 300F
 
-        setMeasuredDimension(20, 20)
+        setMeasuredDimension(200, 200)
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         paint.color = Color.BLUE
-        canvas.drawRect((width / 2 - 30).toFloat(), (height / 2 - 20).toFloat(), (width / 2 + 20).toFloat(), (height / 2 + 20).toFloat(), paint)
+//        canvas.drawRect((width / 2 - 30).toFloat(), (height / 2 - 20).toFloat(), (width / 2 + 20).toFloat(), (height / 2 + 20).toFloat(), paint)
+        canvas.drawRect(0F, 0F, 20F, 20F, paint)
         paint.color = Color.YELLOW
         paint.textSize = 30F
         val text = count.toString()
