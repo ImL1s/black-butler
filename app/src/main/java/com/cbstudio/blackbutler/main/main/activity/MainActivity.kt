@@ -7,6 +7,7 @@ import android.view.WindowManager
 import com.cbstudio.blackbutler.R
 import com.cbstudio.blackbutler.databinding.ActivityMainBinding
 import com.cbstudio.blackbutler.extensions.startService
+import com.cbstudio.blackbutler.extensions.stopService
 import com.cbstudio.blackbutler.main.base.activity.BaseActivity
 import com.cbstudio.blackbutler.main.main.vm.MainViewModel
 import com.cbstudio.blackbutler.services.FloatViewService
@@ -29,6 +30,8 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>
 
         viewModel.stopClickSubject
                 .subscribe {
+                    Intent(this, FloatViewService::class.java)
+                            .stopService(this)
                     // TODO stop service
                 }
     }

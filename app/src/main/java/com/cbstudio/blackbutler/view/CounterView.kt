@@ -12,8 +12,9 @@ import android.view.View
 
 /**
  * Created by ImL1s on 2018/6/7.
- * Description:
+ * Description: this class is for test.
  */
+@Deprecated("this class is for test")
 class CounterView(context: Context) : View(context), View.OnClickListener {
 
     private var paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -23,7 +24,8 @@ class CounterView(context: Context) : View(context), View.OnClickListener {
 
 
     init {
-        setOnClickListener(this)
+//        setOnClickListener(this)
+        setBackgroundColor(0xFFFFFF00.toInt())
     }
 
     override fun onClick(v: View?) {
@@ -39,19 +41,23 @@ class CounterView(context: Context) : View(context), View.OnClickListener {
         val heightMode = View.MeasureSpec.getMode(heightMeasureSpec)
         val heightSize = View.MeasureSpec.getSize(heightMeasureSpec)
 
+        Log.e("onMeasure", "width is at most: ${widthMode == MeasureSpec.AT_MOST}")
+        Log.e("onMeasure", "height is at most: ${heightMode == MeasureSpec.AT_MOST}")
         Log.e("onMeasure", "onMeasure: x-$widthMode/$widthSize")
         Log.e("onMeasure", "onMeasure: y-$heightMode/$heightSize")
+        Log.e("onMeasure", "x:$x y:$y")
 //        x = 300F
 //        y = 300F
-
-        setMeasuredDimension(200, 200)
+        x = 0F
+//        setMeasuredDimension(widthSize, heightSize)
+        setMeasuredDimension(500, 500)
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         paint.color = Color.BLUE
-//        canvas.drawRect((width / 2 - 30).toFloat(), (height / 2 - 20).toFloat(), (width / 2 + 20).toFloat(), (height / 2 + 20).toFloat(), paint)
-        canvas.drawRect(0F, 0F, 20F, 20F, paint)
+        canvas.drawRect((width / 2 - 30).toFloat(), (height / 2 - 20).toFloat(), (width / 2 + 20).toFloat(), (height / 2 + 20).toFloat(), paint)
+//        canvas.drawRect(0F, 0F, 20F, 20F, paint)
         paint.color = Color.YELLOW
         paint.textSize = 30F
         val text = count.toString()
@@ -65,16 +71,17 @@ class CounterView(context: Context) : View(context), View.OnClickListener {
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if (event != null) {
-            when (event.action) {
-                MotionEvent.ACTION_MOVE -> {
-                    x = event.x - width / 2
-                    y = event.y - height / 2
-                    postInvalidate()
-                    return true
-                }
-            }
-        }
+//        if (event != null) {
+//            when (event.action) {
+//                MotionEvent.ACTION_MOVE -> {
+//                    x = event.x - width / 2
+//                    y = event.y - height / 2
+//                    postInvalidate()
+//                    Log.e("onMeasure", "x:${event.x} y:${event.y}")
+//                    return true
+//                }
+//            }
+//        }
         return super.onTouchEvent(event)
     }
 }

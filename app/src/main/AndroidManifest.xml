@@ -12,14 +12,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.cbstudio.blackbutler.main.main.activity.MainActivity">
+        <activity android:name=".main.main.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name=".services.FloatViewService" />
+
+        <activity android:name=".main.search.activity.SearchActivity"
+            android:theme="@style/AppThemeNoTitle"/>
     </application>
 
 </manifest>
