@@ -1,9 +1,9 @@
 
 {
-	"buildFiles" : [ "/Users/iml1s-macpro/Project/Android/blackButler/app/CMakeLists.txt" ],
+	"buildFiles" : [ "/Users/iml1s/Project/Android/black-butler/app/CMakeLists.txt" ],
 	"cleanCommands" : 
 	[
-		"/Users/iml1s-macpro/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/iml1s-macpro/Project/Android/blackButler/app/.externalNativeBuild/cmake/release/x86 --target clean"
+		"/Users/iml1s/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/iml1s/Project/Android/black-butler/app/.externalNativeBuild/cmake/release/x86 --target clean"
 	],
 	"cppFileExtensions" : [ "cpp" ],
 	"libraries" : 
@@ -12,27 +12,27 @@
 		{
 			"abi" : "x86",
 			"artifactName" : "native-lib",
-			"buildCommand" : "/Users/iml1s-macpro/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/iml1s-macpro/Project/Android/blackButler/app/.externalNativeBuild/cmake/release/x86 --target native-lib",
+			"buildCommand" : "/Users/iml1s/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/iml1s/Project/Android/black-butler/app/.externalNativeBuild/cmake/release/x86 --target native-lib",
 			"buildType" : "release",
 			"files" : 
 			[
 				
 				{
-					"flags" : "  --target=i686-none-linux-android --gcc-toolchain=/Users/iml1s-macpro/Library/Android/sdk/ndk-bundle/toolchains/x86-4.9/prebuilt/darwin-x86_64 --sysroot=/Users/iml1s-macpro/Library/Android/sdk/ndk-bundle/sysroot  -Dnative_lib_EXPORTS -isystem /Users/iml1s-macpro/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /Users/iml1s-macpro/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/libs/x86/include -isystem /Users/iml1s-macpro/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -isystem /Users/iml1s-macpro/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC    -c ",
-					"src" : "/Users/iml1s-macpro/Project/Android/blackButler/app/src/main/cpp/native-lib.cpp",
-					"workingDirectory" : "/Users/iml1s-macpro/Project/Android/blackButler/app/.externalNativeBuild/cmake/release/x86"
+					"flags" : "  --target=i686-none-linux-android --gcc-toolchain=/Users/iml1s/Library/Android/sdk/ndk-bundle/toolchains/x86-4.9/prebuilt/darwin-x86_64 --sysroot=/Users/iml1s/Library/Android/sdk/ndk-bundle/sysroot  -Dnative_lib_EXPORTS -isystem /Users/iml1s/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem /Users/iml1s/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/libs/x86/include -isystem /Users/iml1s/Library/Android/sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/backward  -isystem /Users/iml1s/Library/Android/sdk/ndk-bundle/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security   -O2 -DNDEBUG  -fPIC    -c ",
+					"src" : "/Users/iml1s/Project/Android/black-butler/app/src/main/cpp/native-lib.cpp",
+					"workingDirectory" : "/Users/iml1s/Project/Android/black-butler/app/.externalNativeBuild/cmake/release/x86"
 				}
 			],
-			"output" : "/Users/iml1s-macpro/Project/Android/blackButler/app/build/intermediates/cmake/release/obj/x86/libnative-lib.so",
-			"toolchain" : "2457448021087989353"
+			"output" : "/Users/iml1s/Project/Android/black-butler/app/build/intermediates/cmake/release/obj/x86/libnative-lib.so",
+			"toolchain" : "1431746227976329339"
 		}
 	},
 	"toolchains" : 
 	{
-		"2457448021087989353" : 
+		"1431746227976329339" : 
 		{
-			"cCompilerExecutable" : "/Users/iml1s-macpro/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
-			"cppCompilerExecutable" : "/Users/iml1s-macpro/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+			"cCompilerExecutable" : "/Users/iml1s/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang",
+			"cppCompilerExecutable" : "/Users/iml1s/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
 		}
 	}
 }

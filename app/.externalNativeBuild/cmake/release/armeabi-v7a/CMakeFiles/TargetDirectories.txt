@@ -1,3 +1,3 @@
-/Users/iml1s-macpro/Project/Android/blackButler/app/.externalNativeBuild/cmake/release/armeabi-v7a/CMakeFiles/edit_cache.dir
-/Users/iml1s-macpro/Project/Android/blackButler/app/.externalNativeBuild/cmake/release/armeabi-v7a/CMakeFiles/rebuild_cache.dir
-/Users/iml1s-macpro/Project/Android/blackButler/app/.externalNativeBuild/cmake/release/armeabi-v7a/CMakeFiles/native-lib.dir
+/Users/iml1s/Project/Android/black-butler/app/.externalNativeBuild/cmake/release/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/iml1s/Project/Android/black-butler/app/.externalNativeBuild/cmake/release/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+/Users/iml1s/Project/Android/black-butler/app/.externalNativeBuild/cmake/release/armeabi-v7a/CMakeFiles/native-lib.dir

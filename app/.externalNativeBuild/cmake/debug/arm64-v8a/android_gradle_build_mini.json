@@ -1,16 +1,16 @@
 {
   "buildFiles": [
-    "/Users/iml1s-macpro/Project/Android/blackButler/app/CMakeLists.txt"
+    "/Users/iml1s/Project/Android/black-butler/app/CMakeLists.txt"
   ],
   "cleanCommands": [
-    "/Users/iml1s-macpro/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/iml1s-macpro/Project/Android/blackButler/app/.externalNativeBuild/cmake/debug/arm64-v8a --target clean"
+    "/Users/iml1s/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/iml1s/Project/Android/black-butler/app/.externalNativeBuild/cmake/debug/arm64-v8a --target clean"
   ],
   "libraries": {
     "native-lib-Debug-arm64-v8a": {
       "artifactName": "native-lib",
-      "buildCommand": "/Users/iml1s-macpro/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/iml1s-macpro/Project/Android/blackButler/app/.externalNativeBuild/cmake/debug/arm64-v8a --target native-lib",
+      "buildCommand": "/Users/iml1s/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/iml1s/Project/Android/black-butler/app/.externalNativeBuild/cmake/debug/arm64-v8a --target native-lib",
       "abi": "arm64-v8a",
-      "output": "/Users/iml1s-macpro/Project/Android/blackButler/app/build/intermediates/cmake/debug/obj/arm64-v8a/libnative-lib.so"
+      "output": "/Users/iml1s/Project/Android/black-butler/app/build/intermediates/cmake/debug/obj/arm64-v8a/libnative-lib.so"
     }
   }
 }
