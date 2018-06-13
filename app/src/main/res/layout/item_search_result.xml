@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.cbstudio.blackbutler.main.search.vm.SearchResultItemViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FF0000"
+        android:onClick="@{vm.onClickSource}"
+        android:orientation="horizontal">
+
+        <ImageView
+            drawable="@{vm.iconDrawableField}"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:contentDescription="Hi" />
+
+        <TextView
+            android:id="@+id/tv_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@{vm.resultTextField}"
+            android:textSize="16dp" />
+
+    </LinearLayout>
+</layout>

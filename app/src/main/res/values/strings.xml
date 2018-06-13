@@ -3,4 +3,5 @@
     <string name="not_granted_overlays">not granted overlays permission</string>
     <string name="start">START</string>
     <string name="stop">STOP</string>
+    <string name="unable_open_no_ui_app">此應用無介面,無法打開</string>
 </resources>

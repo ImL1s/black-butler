@@ -13,8 +13,9 @@ import android.provider.Settings
 import android.support.annotation.LayoutRes
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import androidx.core.widget.toast
-import com.android.databinding.library.baseAdapters.BR
+import com.cbstudio.blackbutler.BR
 import com.cbstudio.blackbutler.R
 import com.cbstudio.blackbutler.constants.ACTIVITY_REQUEST_CODE_OVERLAYS
 import com.cbstudio.blackbutler.constants.LOG_TAG_DEBUG
@@ -40,6 +41,8 @@ abstract class BaseActivity<TViewModel : BaseViewModel, TViewDataBinding : ViewD
 
     protected val isVersionGreaterThanM
         get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+
+    val rootView: View by lazy { return@lazy viewDataBinding.root }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

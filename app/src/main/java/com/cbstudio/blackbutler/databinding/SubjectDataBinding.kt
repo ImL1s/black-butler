@@ -1,5 +1,6 @@
 package com.cbstudio.blackbutler.databinding
 
+import android.databinding.BindingAdapter
 import android.databinding.BindingConversion
 import android.view.View
 import com.cbstudio.blackbutler.extensions.onNext
@@ -15,10 +16,8 @@ object SubjectDataBinding {
 
     @JvmStatic
     @BindingConversion
-    fun subjectUnitToOnClickListener(subject: Subject<Unit>?): View.OnClickListener? {
-        if (subject != null) {
-            return View.OnClickListener { subject.onNext() }
-        }
-        return null
+    fun subjectUnitToOnClickListener(subject: Subject<Unit>): View.OnClickListener {
+        return View.OnClickListener { subject.onNext() }
     }
+
 }
