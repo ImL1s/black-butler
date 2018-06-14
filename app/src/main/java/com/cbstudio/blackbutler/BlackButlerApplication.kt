@@ -11,9 +11,9 @@ import com.cbstudio.blackbutler.module.DaggerAppComponent
  */
 class BlackButlerApplication : Application() {
 
-    val appComponent: AppComponent by lazy {
-        DaggerAppComponent.builder().application(this).build()
-    }
+//    val appComponent: AppComponent by lazy {
+//        DaggerAppComponent.builder().application(this).build()
+//    }
 
     override fun onCreate() {
         super.onCreate()

@@ -2,7 +2,6 @@ package com.cbstudio.blackbutler.main.search.activity
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
-import android.content.pm.PackageManager
 import android.databinding.DataBindingUtil
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -23,9 +22,12 @@ import com.cbstudio.blackbutler.databinding.ItemSearchResultBinding
 import com.cbstudio.blackbutler.main.base.activity.BaseActivity
 import com.cbstudio.blackbutler.main.search.vm.SearchResultItemViewModel
 import com.cbstudio.blackbutler.main.search.vm.SearchViewModel
+import com.cbstudio.blackbutler.manager.ApplicationsInfoManager
+import com.cbstudio.blackbutler.manager.IApplicationsInfoManager
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 
 class SearchActivity : BaseActivity<SearchViewModel, ActivitySearchBinding>
@@ -34,14 +36,17 @@ class SearchActivity : BaseActivity<SearchViewModel, ActivitySearchBinding>
         , R.layout.activity_search
 ) {
 
-    lateinit var appList: List<ApplicationInfo>
-    lateinit var recycleView: RecyclerView
-    val searchResultAdapter = SearchResultAdapter()
+    @Inject
+    lateinit var applicationsInfoManager: ApplicationsInfoManager
+    private lateinit var recycleView: RecyclerView
+    private val searchResultAdapter = SearchResultAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         recycleView = rootView.findViewById(R.id.rccv_result)
+        appComponent.inject(this)
+
         val layoutManager = LinearLayoutManager(this)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recycleView.layoutManager = layoutManager
@@ -69,11 +74,10 @@ class SearchActivity : BaseActivity<SearchViewModel, ActivitySearchBinding>
                     if (searchText.count() == 0) {
                         return@switchMap io.reactivex.Observable.just(ArrayList<ApplicationInfo>())
                     }
-                    val result = appList
+                    val result = applicationsInfoManager.appHashMap
                             .filter {
-                                val appLabelName = packageManager.getApplicationLabel(it).toString()
-                                appLabelName.startsWith(searchText, true)
-                            }
+                                it.key.startsWith(searchText, true)
+                            }.map { it.value }
                     io.reactivex.Observable.just(result)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
@@ -88,19 +92,19 @@ class SearchActivity : BaseActivity<SearchViewModel, ActivitySearchBinding>
                     searchResultAdapter.notifyDataSetChanged()
                 }
 
-        initAppList()
+//        initAppList()
     }
 
-    private fun initAppList() {
-        val pm = packageManager
-        val packages = pm.getInstalledApplications(PackageManager.GET_META_DATA)
-        packages?.let { appList = it }
-//        packages.forEach {
-//            val launchIntent = pm.getLaunchIntentForPackage(it.packageName)
-//            startActivity(launchIntent)
+//    private fun initAppList() {
+//        val pm = packageManager
+//        val packages = pm.getInstalledApplications(PackageManager.GET_META_DATA)
+//        packages?.let {
+//            it.forEach {
+//                val appLabelName = packageManager.getApplicationLabel(it).toString()
+//                appHashMap[appLabelName] = it
+//            }
 //        }
-
-    }
+//    }
 
     inner class SearchResultAdapter(var resultList: List<AppInfo> = ArrayList())
         : RecyclerView.Adapter<ViewHolder>() {
