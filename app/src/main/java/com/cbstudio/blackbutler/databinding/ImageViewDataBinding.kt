@@ -14,7 +14,6 @@ object ImageViewDataBinding {
     @JvmStatic
     @BindingAdapter("drawable")
     fun setImageViewDrawable(view: ImageView, drawable: Drawable?) {
-        if (drawable == null) return
         view.setImageDrawable(drawable)
     }
 }
