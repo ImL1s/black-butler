@@ -1,5 +1,6 @@
-package com.cbstudio.blackbutler.module
+package com.cbstudio.blackbutler.dagger.module
 
+import com.cbstudio.blackbutler.dagger.annotation.PerApplication
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -17,21 +18,21 @@ import javax.inject.Singleton
 @Module
 class NetworkModule {
 
-    @Singleton
+    @PerApplication
     @Provides
     fun provideGson(): Gson {
         return GsonBuilder()
                 .create()
     }
 
-    @Singleton
+    @PerApplication
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
                 .build()
     }
 
-    @Singleton
+    @PerApplication
     @Provides
     fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
         val builder = Retrofit.Builder()

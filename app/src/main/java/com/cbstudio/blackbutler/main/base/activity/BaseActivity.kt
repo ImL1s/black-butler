@@ -20,11 +20,11 @@ import com.cbstudio.blackbutler.BlackButlerApplication
 import com.cbstudio.blackbutler.R
 import com.cbstudio.blackbutler.constants.ACTIVITY_REQUEST_CODE_OVERLAYS
 import com.cbstudio.blackbutler.constants.LOG_TAG_DEBUG
+import com.cbstudio.blackbutler.dagger.component.ActivityComponent
+import com.cbstudio.blackbutler.dagger.component.AppComponent
+import com.cbstudio.blackbutler.dagger.component.DaggerActivityComponent
 import com.cbstudio.blackbutler.extensions.startActivityForResult
 import com.cbstudio.blackbutler.main.base.vm.BaseViewModel
-import com.cbstudio.blackbutler.module.AppComponent
-import com.cbstudio.blackbutler.module.AppModule
-import com.cbstudio.blackbutler.module.DaggerAppComponent
 import kotlin.reflect.KClass
 
 
@@ -46,12 +46,16 @@ abstract class BaseActivity<TViewModel : BaseViewModel, TViewDataBinding : ViewD
     protected val isVersionGreaterThanM
         get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 
-    protected val appComponent: AppComponent by lazy {
-        DaggerAppComponent.builder()
-                .appModule(AppModule(this.applicationContext as BlackButlerApplication))
-//                .application(this.applicationContext as BlackButlerApplication)
+    protected val activityComponent: ActivityComponent by lazy {
+        DaggerActivityComponent.builder()
                 .build()
     }
+
+    protected val appComponent: AppComponent
+        get() = application.appComponent
+
+    protected val application
+        get() = applicationContext as BlackButlerApplication
 
     val rootView: View by lazy { return@lazy viewDataBinding.root }
 

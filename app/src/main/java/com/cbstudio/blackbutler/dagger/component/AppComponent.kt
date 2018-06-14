@@ -1,6 +1,9 @@
-package com.cbstudio.blackbutler.module
+package com.cbstudio.blackbutler.dagger.component
 
 import com.cbstudio.blackbutler.BlackButlerApplication
+import com.cbstudio.blackbutler.dagger.annotation.PerApplication
+import com.cbstudio.blackbutler.dagger.module.AppModule
+import com.cbstudio.blackbutler.dagger.module.NetworkModule
 import com.cbstudio.blackbutler.main.search.activity.SearchActivity
 import dagger.Component
 import javax.inject.Singleton
@@ -11,13 +14,11 @@ import javax.inject.Singleton
  * Description:
  */
 
-@Singleton
+@PerApplication
 @Component(modules = [AppModule::class, NetworkModule::class])
 interface AppComponent {
 
     fun inject(app: BlackButlerApplication)
-
-//    fun inject(appModule: AppModule)
 
     fun inject(searchActivity: SearchActivity)
 

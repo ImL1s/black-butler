@@ -22,8 +22,8 @@ import com.cbstudio.blackbutler.databinding.ItemSearchResultBinding
 import com.cbstudio.blackbutler.main.base.activity.BaseActivity
 import com.cbstudio.blackbutler.main.search.vm.SearchResultItemViewModel
 import com.cbstudio.blackbutler.main.search.vm.SearchViewModel
-import com.cbstudio.blackbutler.manager.ApplicationsInfoManager
 import com.cbstudio.blackbutler.manager.IApplicationsInfoManager
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.TimeUnit
@@ -37,15 +37,18 @@ class SearchActivity : BaseActivity<SearchViewModel, ActivitySearchBinding>
 ) {
 
     @Inject
-    lateinit var applicationsInfoManager: ApplicationsInfoManager
+    lateinit var applicationsInfoManager: IApplicationsInfoManager
+
     private lateinit var recycleView: RecyclerView
+
     private val searchResultAdapter = SearchResultAdapter()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        recycleView = rootView.findViewById(R.id.rccv_result)
         appComponent.inject(this)
+        recycleView = rootView.findViewById(R.id.rccv_result)
 
         val layoutManager = LinearLayoutManager(this)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -54,26 +57,46 @@ class SearchActivity : BaseActivity<SearchViewModel, ActivitySearchBinding>
 
         viewDataBinding.root.findViewById<EditText>(R.id.ed_search)
                 .addTextChangedListener(object : TextWatcher {
-                    override fun afterTextChanged(s: Editable?) {
+                    override fun afterTextChanged(s: Editable?) {}
 
-                    }
-
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-                    }
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                         viewModel.textChangeSource.onNext(s.toString())
                     }
-
                 })
 
         viewModel.textChangeSource
                 .debounce(200, TimeUnit.MILLISECONDS)
                 .switchMap { searchText ->
                     if (searchText.count() == 0) {
+                        // no input
                         return@switchMap io.reactivex.Observable.just(ArrayList<ApplicationInfo>())
                     }
+
+                    // calc: match the calc pattern, ex: 1+1, 2*7, 9-4, 8/2
+                    if (searchText.matches(Regex("[0-9]+[+\\-*/][0-9]+"))) {
+                        val splitText = searchText.split(Regex("[\\+\\-\\*\\/]"))
+                        val operation = searchText.replace(Regex("[0-9]"), "")
+                        val para1 = splitText[0].toFloat()
+                        val para2 = splitText[1].toFloat()
+                        when (operation) {
+                            "+" -> {
+                                return@switchMap Observable.just(para1 + para2)
+                            }
+                            "-" -> {
+                                return@switchMap Observable.just(para1 - para2)
+                            }
+                            "*" -> {
+                                return@switchMap Observable.just(para1 * para2)
+                            }
+                            "/" -> {
+                                return@switchMap Observable.just(para1 / para2)
+                            }
+                        }
+                    }
+
+                    // common operation
                     val result = applicationsInfoManager.appHashMap
                             .filter {
                                 it.key.startsWith(searchText, true)
@@ -81,31 +104,25 @@ class SearchActivity : BaseActivity<SearchViewModel, ActivitySearchBinding>
                     io.reactivex.Observable.just(result)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { result: List<ApplicationInfo> ->
-                    Log.d(LOG_TAG_DEBUG, "count: ${result.size}")
+                .subscribe { result: Any ->
+                    if (result is Float) {
+                        searchResultAdapter.resultList = arrayListOf(AppInfo("$result", null, ""))
 
-                    searchResultAdapter.resultList = result.map {
-                        val name = packageManager.getApplicationLabel(it).toString()
-                        val iconDrawable = it.loadIcon(packageManager)
-                        AppInfo(name, iconDrawable, it.packageName)
+                    } else if (result is List<*>) {
+                        val applicationList = result as List<ApplicationInfo>
+                        Log.d(LOG_TAG_DEBUG, "count: ${result.size}")
+
+                        searchResultAdapter.resultList = applicationList.map {
+                            val name = packageManager.getApplicationLabel(it).toString()
+                            val iconDrawable = it.loadIcon(packageManager)
+                            AppInfo(name, iconDrawable, it.packageName)
+                        }
                     }
                     searchResultAdapter.notifyDataSetChanged()
                 }
-
-//        initAppList()
     }
 
-//    private fun initAppList() {
-//        val pm = packageManager
-//        val packages = pm.getInstalledApplications(PackageManager.GET_META_DATA)
-//        packages?.let {
-//            it.forEach {
-//                val appLabelName = packageManager.getApplicationLabel(it).toString()
-//                appHashMap[appLabelName] = it
-//            }
-//        }
-//    }
-
+    //region [inner class]
     inner class SearchResultAdapter(var resultList: List<AppInfo> = ArrayList())
         : RecyclerView.Adapter<ViewHolder>() {
 
@@ -151,17 +168,20 @@ class SearchActivity : BaseActivity<SearchViewModel, ActivitySearchBinding>
             disposableMap[hashCode] = disposable
         }
     }
+    // endregion
 
-    data class AppInfo(val name: String, val icon: Drawable, val packageName: String)
+
+    // region [data class]
+    data class AppInfo(val name: String, val icon: Drawable?, val packageName: String)
+    // endregion
 
 
+    // region [model class]
     class ViewHolder(val viewDataBinding: ItemSearchResultBinding,
                      val vm: SearchResultItemViewModel = viewDataBinding.vm as SearchResultItemViewModel,
                      val tv: TextView = viewDataBinding.root.findViewById(R.id.tv_result)) :
-            RecyclerView.ViewHolder(viewDataBinding.root) {
-
-    }
-
+            RecyclerView.ViewHolder(viewDataBinding.root)
+    // endregion
 
 }
 
