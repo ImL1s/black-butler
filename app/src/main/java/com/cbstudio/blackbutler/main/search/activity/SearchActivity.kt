@@ -1,9 +1,11 @@
 package com.cbstudio.blackbutler.main.search.activity
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.databinding.DataBindingUtil
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -23,9 +25,11 @@ import com.cbstudio.blackbutler.main.base.activity.BaseActivity
 import com.cbstudio.blackbutler.main.search.vm.SearchResultItemViewModel
 import com.cbstudio.blackbutler.main.search.vm.SearchViewModel
 import com.cbstudio.blackbutler.manager.IApplicationsInfoManager
+import com.cbstudio.blackbutler.typedefine.ResultClick
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import java.net.URLEncoder
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -76,54 +80,85 @@ class SearchActivity : BaseActivity<SearchViewModel, ActivitySearchBinding>
 
                     // calc: match the calc pattern, ex: 1+1, 2*7, 9-4, 8/2
                     if (searchText.matches(Regex("[0-9]+[+\\-*/][0-9]+"))) {
-                        val splitText = searchText.split(Regex("[\\+\\-\\*\\/]"))
-                        val operation = searchText.replace(Regex("[0-9]"), "")
-                        val para1 = splitText[0].toFloat()
-                        val para2 = splitText[1].toFloat()
-                        when (operation) {
-                            "+" -> {
-                                return@switchMap Observable.just(para1 + para2)
-                            }
-                            "-" -> {
-                                return@switchMap Observable.just(para1 - para2)
-                            }
-                            "*" -> {
-                                return@switchMap Observable.just(para1 * para2)
-                            }
-                            "/" -> {
-                                return@switchMap Observable.just(para1 / para2)
-                            }
-                        }
+                        return@switchMap calc(searchText)
+                    }
+
+                    if (searchText.count() > 2 && searchText.startsWith("g ", true)) {
+                        return@switchMap Observable.just(searchText.substring(1).trim())
                     }
 
                     // common operation
-                    val result = applicationsInfoManager.appHashMap
-                            .filter {
-                                it.key.startsWith(searchText, true)
-                            }.map { it.value }
-                    io.reactivex.Observable.just(result)
+                    searchApp(searchText)
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { result: Any ->
-                    if (result is Float) {
-                        searchResultAdapter.resultList = arrayListOf(AppInfo("$result", null, ""))
-
-                    } else if (result is List<*>) {
-                        val applicationList = result as List<ApplicationInfo>
-                        Log.d(LOG_TAG_DEBUG, "count: ${result.size}")
-
-                        searchResultAdapter.resultList = applicationList.map {
-                            val name = packageManager.getApplicationLabel(it).toString()
-                            val iconDrawable = it.loadIcon(packageManager)
-                            AppInfo(name, iconDrawable, it.packageName)
+                    when (result) {
+                        is Float -> {
+                            searchResultAdapter.resultList = arrayListOf(AppInfo(this, "$result", null, ""))
+                        }
+                        is List<*> -> {
+                            refreshAdapterData(result as List<ApplicationInfo>)
+                        }
+                        is String -> {
+                            val uri = makeSearchWithGoogleUri(result)
+                            searchResultAdapter.resultList = arrayListOf(
+                                    SearchInfo(this, result, resources.getDrawable(R.drawable.ic_google, theme), uri)
+                            )
                         }
                     }
                     searchResultAdapter.notifyDataSetChanged()
                 }
     }
 
+    private fun makeSearchWithGoogleUri(searchText: String): Uri {
+        val query = URLEncoder.encode(searchText, "UTF-8")
+        return Uri.parse("https://www.google.com/#q=$query")
+    }
+
+    private fun refreshAdapterData(result: List<ApplicationInfo>) {
+        Log.d(LOG_TAG_DEBUG, "count: ${result.size}")
+
+        searchResultAdapter.resultList = result.map {
+            val name = packageManager.getApplicationLabel(it).toString()
+            val iconDrawable = it.loadIcon(packageManager)
+            AppInfo(this, name, iconDrawable, it.packageName)
+        }
+    }
+
+    private fun searchApp(searchText: String): Observable<List<ApplicationInfo>>? {
+        val result = applicationsInfoManager.appHashMap
+                .filter {
+                    it.key.startsWith(searchText, true)
+                }.map { it.value }
+        return Observable.just(result)
+    }
+
+    private fun calc(searchText: String): Observable<Float>? {
+        val splitText = searchText.split(Regex("[\\+\\-\\*\\/]"))
+        val operation = searchText.replace(Regex("[0-9]"), "")
+        val para1 = splitText[0].toFloat()
+        val para2 = splitText[1].toFloat()
+        when (operation) {
+            "+" -> {
+                return Observable.just(para1 + para2)
+            }
+            "-" -> {
+                return Observable.just(para1 - para2)
+            }
+            "*" -> {
+                return Observable.just(para1 * para2)
+            }
+            "/" -> {
+                return Observable.just(para1 / para2)
+            }
+            else -> {
+                return Observable.just(0f)
+            }
+        }
+    }
+
     //region [inner class]
-    inner class SearchResultAdapter(var resultList: List<AppInfo> = ArrayList())
+    inner class SearchResultAdapter(var resultList: List<ResultInfo> = ArrayList())
         : RecyclerView.Adapter<ViewHolder>() {
 
         private val disposableMap: HashMap<Int, Disposable> = HashMap()
@@ -156,13 +191,7 @@ class SearchActivity : BaseActivity<SearchViewModel, ActivitySearchBinding>
 
             val disposable = holder.vm.onClickSource
                     .subscribe {
-                        val launchIntent = packageManager.getLaunchIntentForPackage(result.packageName)
-                        if (launchIntent == null) {
-                            toast(getString(R.string.unable_open_no_ui_app)).show()
-                            return@subscribe
-                        }
-                        startActivity(launchIntent)
-                        finish()
+                        result.resultClick()
                     }
 
             disposableMap[hashCode] = disposable
@@ -172,7 +201,27 @@ class SearchActivity : BaseActivity<SearchViewModel, ActivitySearchBinding>
 
 
     // region [data class]
-    data class AppInfo(val name: String, val icon: Drawable?, val packageName: String)
+    abstract class ResultInfo(val name: String, val icon: Drawable?, val resultClick: ResultClick)
+
+    class AppInfo(val activity: BaseActivity<*, *>, name: String, icon: Drawable?, private val packageName: String)
+        : ResultInfo(
+            name,
+            icon, {
+        val launchIntent = activity.packageManager.getLaunchIntentForPackage(packageName)
+        if (launchIntent == null) {
+            activity.toast(activity.getString(R.string.unable_open_no_ui_app)).show()
+        } else {
+            activity.startActivity(launchIntent)
+            activity.finish()
+        }
+    })
+
+    class SearchInfo(val activity: BaseActivity<*, *>, name: String, icon: Drawable?, searchUrl: Uri)
+        : ResultInfo(
+            name,
+            icon, {
+        activity.startActivity(Intent(Intent.ACTION_VIEW, searchUrl))
+    })
     // endregion
 
 

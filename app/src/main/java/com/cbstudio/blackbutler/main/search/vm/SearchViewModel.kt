@@ -1,8 +1,7 @@
 package com.cbstudio.blackbutler.main.search.vm
 
 import android.arch.lifecycle.MutableLiveData
-import android.content.Intent
-import android.content.pm.ResolveInfo
+import android.databinding.ObservableField
 import com.cbstudio.blackbutler.main.base.vm.BaseViewModel
 import io.reactivex.subjects.BehaviorSubject
 import java.util.concurrent.TimeUnit
@@ -17,6 +16,7 @@ class SearchViewModel : BaseViewModel() {
     val searchTextLiveData = MutableLiveData<String>()
     val searchResultLiveData = MutableLiveData<List<String>>()
     val textChangeSource = BehaviorSubject.create<String>()
+    val googleSearcgUrlField = ObservableField<String>("")
 
     init {
         textChangeSource
